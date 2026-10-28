@@ -1,0 +1,110 @@
+{% extends "movies/base.html" %}
+
+{% block title %}{{ movie.title }} | MovieTrack{% endblock %}
+
+{% block content %}
+
+<div class="container py-5">
+
+    <div class="row justify-content-center">
+
+        <div class="col-lg-8">
+
+            <a
+                href="{% url 'movie_list' %}"
+                class="btn btn-outline-secondary mb-4"
+            >
+                &larr; Back to Movies
+            </a>
+
+            <h1 class="display-5 fw-bold">
+                {{ movie.title }}
+            </h1>
+
+            <p class="lead text-muted">
+                {{ movie.release_year }} &bull; {{ movie.genre }}
+            </p>
+
+            <hr>
+
+            <h4>Description</h4>
+
+            <p>
+                {{ movie.description }}
+            </p>
+
+            <hr>
+
+            <h4>My Watchlist</h4>
+
+            {% if user.is_authenticated %}
+
+                {% if watch_entry %}
+
+                    <div class="alert alert-success mt-3">
+                        This movie is in your watchlist.
+                    </div>
+
+                    <p>
+                        <strong>Status:</strong>
+                        {{ watch_entry.get_status_display }}
+                    </p>
+
+                    {% if watch_entry.rating %}
+                        <p>
+                            <strong>Your Rating:</strong>
+                            {{ watch_entry.rating }}/10
+                        </p>
+                    {% endif %}
+
+                    {% if watch_entry.review %}
+                        <p>
+                            <strong>Your Review:</strong>
+                            {{ watch_entry.review }}
+                        </p>
+                    {% endif %}
+
+                    <a
+                        href="{% url 'edit_watch_entry' watch_entry.id %}"
+                        class="btn btn-primary"
+                    >
+                        Edit Watchlist Entry
+                    </a>
+
+                {% else %}
+
+                    <p class="text-muted">
+                        This movie is not currently in your watchlist.
+                    </p>
+
+                    <form
+                        method="post"
+                        action="{% url 'add_to_watchlist' movie.id %}"
+                    >
+                        {% csrf_token %}
+
+                        <button
+                            type="submit"
+                            class="btn btn-primary"
+                        >
+                            Add to My Watchlist
+                        </button>
+                    </form>
+
+                {% endif %}
+
+            {% else %}
+
+                <div class="alert alert-info mt-3">
+                    Please log in to add movies to your watchlist.
+                </div>
+
+            {% endif %}
+
+        </div>
+
+    </div>
+
+</div>
+
+{% endblock %}

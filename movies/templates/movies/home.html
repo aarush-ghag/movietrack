@@ -1,0 +1,66 @@
+{% extends "movies/base.html" %}
+
+{% block title %}Home | MovieTrack{% endblock %}
+
+{% block content %}
+
+<div class="container py-5">
+
+    <div class="text-center py-5">
+        <h1 class="display-3 fw-bold">
+            MovieTrack
+        </h1>
+
+        <p class="lead mt-3">
+            Track what you watch.
+        </p>
+
+        <p class="text-muted mx-auto" style="max-width: 650px;">
+            Keep track of movies you want to watch, mark movies as watched,
+            rate and review them, and organize your favorites into custom lists.
+        </p>
+
+        <div class="mt-4">
+            <a href="{% url 'movie_list' %}" class="btn btn-primary btn-lg me-2">
+    Browse Movies
+</a>
+
+            <a href="{% url 'watchlist' %}" class="btn btn-outline-secondary btn-lg">
+    My Watchlist
+</a>
+        </div>
+    </div>
+
+    <hr>
+
+    <div class="row text-center py-5">
+
+        <div class="col-md-4">
+            <h3>Track Movies</h3>
+            <p>
+                Save movies you want to watch and keep track of
+                everything you have already seen.
+            </p>
+        </div>
+
+        <div class="col-md-4">
+            <h3>Rate & Review</h3>
+            <p>
+                Give watched movies a rating and save your own
+                personal reviews.
+            </p>
+        </div>
+
+        <div class="col-md-4">
+            <h3>Create Lists</h3>
+            <p>
+                Organize movies into custom collections such as
+                favorites or movies to watch later.
+            </p>
+        </div>
+
+    </div>
+
+</div>
+
+{% endblock %}

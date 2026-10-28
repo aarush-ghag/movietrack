@@ -1,0 +1,176 @@
+{% extends "movies/base.html" %}
+
+{% block title %}My Watchlist | MovieTrack{% endblock %}
+
+{% block content %}
+
+<div class="container py-5">
+
+    <h1 class="mb-4">
+        My Watchlist
+    </h1>
+
+    <h2 class="mb-3">
+        Want to Watch
+    </h2>
+
+    {% if want_to_watch %}
+
+        <div class="row g-4 mb-5">
+
+            {% for entry in want_to_watch %}
+
+                <div class="col-md-6 col-lg-4">
+
+                    <div class="card h-100 shadow-sm">
+
+                        <div class="card-body">
+
+                            <h4>
+                                {{ entry.movie.title }}
+                            </h4>
+
+                            <p class="text-muted">
+                                {{ entry.movie.release_year }}
+                                &bull;
+                                {{ entry.movie.genre }}
+                            </p>
+
+                            <a
+                                href="{% url 'movie_detail' entry.movie.id %}"
+                                class="btn btn-outline-primary"
+                            >
+                                View Details
+                            </a>
+
+                            <a
+                                href="{% url 'edit_watch_entry' entry.id %}"
+                                class="btn btn-primary"
+                            >
+                                Edit
+                            </a>
+
+                            <form
+                                method="post"
+                                action="{% url 'remove_from_watchlist' entry.id %}"
+                                class="d-inline"
+                            >
+                                {% csrf_token %}
+
+                                <button
+                                    type="submit"
+                                    class="btn btn-outline-danger"
+                                >
+                                    Remove
+                                </button>
+                            </form>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+            {% endfor %}
+
+        </div>
+
+    {% else %}
+
+        <div class="alert alert-secondary mb-5">
+            You do not have any movies marked as Want to Watch.
+        </div>
+
+    {% endif %}
+
+
+    <h2 class="mb-3">
+        Watched
+    </h2>
+
+    {% if watched %}
+
+        <div class="row g-4">
+
+            {% for entry in watched %}
+
+                <div class="col-md-6 col-lg-4">
+
+                    <div class="card h-100 shadow-sm">
+
+                        <div class="card-body">
+
+                            <h4>
+                                {{ entry.movie.title }}
+                            </h4>
+
+                            <p class="text-muted">
+                                {{ entry.movie.release_year }}
+                                &bull;
+                                {{ entry.movie.genre }}
+                            </p>
+
+                            {% if entry.rating %}
+                                <p>
+                                    <strong>My Rating:</strong>
+                                    {{ entry.rating }}/10
+                                </p>
+                            {% endif %}
+
+                            {% if entry.review %}
+                                <p>
+                                    <strong>My Review:</strong>
+                                    {{ entry.review }}
+                                </p>
+                            {% endif %}
+
+                            <a
+                                href="{% url 'movie_detail' entry.movie.id %}"
+                                class="btn btn-outline-primary"
+                            >
+                                View Details
+                            </a>
+
+                            <a
+                                href="{% url 'edit_watch_entry' entry.id %}"
+                                class="btn btn-primary"
+                            >
+                                Edit
+                            </a>
+
+                            <form
+                                method="post"
+                                action="{% url 'remove_from_watchlist' entry.id %}"
+                                class="d-inline"
+                            >
+                                {% csrf_token %}
+
+                                <button
+                                    type="submit"
+                                    class="btn btn-outline-danger"
+                                >
+                                    Remove
+                                </button>
+                            </form>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+            {% endfor %}
+
+        </div>
+
+    {% else %}
+
+        <div class="alert alert-secondary">
+            You have not marked any movies as Watched yet.
+        </div>
+
+    {% endif %}
+
+</div>
+
+{% endblock %}

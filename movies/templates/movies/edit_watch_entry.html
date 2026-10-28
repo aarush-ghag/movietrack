@@ -1,0 +1,81 @@
+{% extends "movies/base.html" %}
+
+{% block title %}Edit {{ entry.movie.title }} | MovieTrack{% endblock %}
+
+{% block content %}
+
+<div class="container py-5">
+
+    <div class="row justify-content-center">
+
+        <div class="col-lg-6">
+
+            <h1 class="mb-2">
+                {{ entry.movie.title }}
+            </h1>
+
+            <p class="text-muted mb-4">
+                Update your watchlist entry, rating, and review.
+            </p>
+
+            <form method="post">
+
+                {% csrf_token %}
+
+                <div class="mb-3">
+                    <label class="form-label">
+                        Status
+                    </label>
+
+                    {{ form.status }}
+                </div>
+
+                <div class="mb-3">
+                    <label class="form-label">
+                        Rating
+                    </label>
+
+                    {{ form.rating }}
+
+                    <div class="form-text">
+                        Optional. Enter a rating from 1 to 10.
+                    </div>
+
+                    {% if form.rating.errors %}
+                        <div class="text-danger">
+                            {{ form.rating.errors }}
+                        </div>
+                    {% endif %}
+                </div>
+
+                <div class="mb-3">
+                    <label class="form-label">
+                        Review
+                    </label>
+
+                    {{ form.review }}
+                </div>
+
+                <button
+                    type="submit"
+                    class="btn btn-primary"
+                >
+                    Save Changes
+                </button>
+
+                <a
+                    href="{% url 'watchlist' %}"
+                    class="btn btn-outline-secondary"
+                >
+                    Cancel
+                </a>
+
+            </form>
+
+        </div>
+
+    </div>
+
+</div>
+
+{% endblock %}
