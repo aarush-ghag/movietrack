@@ -1,6 +1,50 @@
 from django import forms
+from django.contrib.auth.forms import UserCreationForm
+from django.contrib.auth.models import User
 
-from .models import WatchEntry
+from .models import MovieList, WatchEntry
+
+
+class JoinForm(UserCreationForm):
+    email = forms.EmailField(
+        required=True,
+        widget=forms.EmailInput(
+            attrs={
+                "class": "form-control",
+                "placeholder": "Email address",
+            }
+        ),
+    )
+
+    class Meta:
+        model = User
+        fields = ["username", "email", "password1", "password2"]
+
+        widgets = {
+            "username": forms.TextInput(
+                attrs={
+                    "class": "form-control",
+                    "placeholder": "Username",
+                }
+            ),
+        }
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+
+        self.fields["password1"].widget.attrs.update(
+            {
+                "class": "form-control",
+                "placeholder": "Password",
+            }
+        )
+
+        self.fields["password2"].widget.attrs.update(
+            {
+                "class": "form-control",
+                "placeholder": "Confirm password",
+            }
+        )
 
 
 class WatchEntryForm(forms.ModelForm):
@@ -38,3 +82,18 @@ class WatchEntryForm(forms.ModelForm):
             )
 
         return rating
+
+
+class MovieListForm(forms.ModelForm):
+    class Meta:
+        model = MovieList
+        fields = ["name"]
+
+        widgets = {
+            "name": forms.TextInput(
+                attrs={
+                    "class": "form-control",
+                    "placeholder": "Example: Favorite Movies",
+                }
+            )
+        }

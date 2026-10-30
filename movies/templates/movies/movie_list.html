@@ -7,11 +7,77 @@
 <div class="container py-5">
 
     <div class="mb-4">
+
         <h1>Movies</h1>
+
         <p class="text-muted">
             Browse the movies available on MovieTrack.
         </p>
+
     </div>
+
+
+    <form
+        method="get"
+        action="{% url 'movie_list' %}"
+        class="row g-2 mb-4"
+    >
+
+        <div class="col-md-8 col-lg-6">
+
+            <input
+                type="text"
+                name="q"
+                value="{{ query }}"
+                class="form-control"
+                placeholder="Search movies..."
+            >
+
+        </div>
+
+        <div class="col-auto">
+
+            <button
+                type="submit"
+                class="btn btn-primary"
+            >
+                Search
+            </button>
+
+        </div>
+
+        {% if query %}
+
+            <div class="col-auto">
+
+                <a
+                    href="{% url 'movie_list' %}"
+                    class="btn btn-outline-secondary"
+                >
+                    Clear
+                </a>
+
+            </div>
+
+        {% endif %}
+
+    </form>
+
+
+    {% if query %}
+
+        <p class="mb-4">
+
+            Search results for:
+
+            <strong>
+                "{{ query }}"
+            </strong>
+
+        </p>
+
+    {% endif %}
+
 
     {% if movies %}
 
@@ -30,20 +96,28 @@
                             </h4>
 
                             <h6 class="card-subtitle mb-3 text-muted">
-                                {{ movie.release_year }} • {{ movie.genre }}
+
+                                {{ movie.release_year }}
+                                &bull;
+                                {{ movie.genre }}
+
                             </h6>
 
                             <p class="card-text">
+
                                 {{ movie.description|truncatewords:25 }}
+
                             </p>
 
                             <div class="mt-auto">
+
                                 <a
                                     href="{% url 'movie_detail' movie.id %}"
                                     class="btn btn-primary"
                                 >
                                     View Details
                                 </a>
+
                             </div>
 
                         </div>
@@ -58,9 +132,25 @@
 
     {% else %}
 
-        <div class="alert alert-info">
-            No movies have been added yet.
-        </div>
+        {% if query %}
+
+            <div class="alert alert-warning">
+
+                No movies were found matching
+
+                <strong>
+                    "{{ query }}"
+                </strong>.
+
+            </div>
+
+        {% else %}
+
+            <div class="alert alert-info">
+                No movies have been added yet.
+            </div>
+
+        {% endif %}
 
     {% endif %}
 

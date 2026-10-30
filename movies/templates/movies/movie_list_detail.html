@@ -1,0 +1,157 @@
+{% extends "movies/base.html" %}
+
+{% block title %}{{ movie_list.name }} | MovieTrack{% endblock %}
+
+{% block content %}
+
+<div class="container py-5">
+
+    <a
+        href="{% url 'my_lists' %}"
+        class="btn btn-outline-secondary mb-4"
+    >
+        &larr; Back to My Lists
+    </a>
+
+    <h1>
+        {{ movie_list.name }}
+    </h1>
+
+    <p class="text-muted">
+        {{ movie_list.movies.count }}
+        movie{{ movie_list.movies.count|pluralize }}
+    </p>
+
+    <hr>
+
+    <h2 class="mb-3">
+        Movies in this List
+    </h2>
+
+    {% if movie_list.movies.all %}
+
+        <div class="row g-3 mb-5">
+
+            {% for movie in movie_list.movies.all %}
+
+                <div class="col-md-6">
+
+                    <div class="card">
+
+                        <div class="card-body">
+
+                            <h5>
+                                {{ movie.title }}
+                            </h5>
+
+                            <p class="text-muted">
+                                {{ movie.release_year }}
+                                &bull;
+                                {{ movie.genre }}
+                            </p>
+
+                            <a
+                                href="{% url 'movie_detail' movie.id %}"
+                                class="btn btn-outline-primary"
+                            >
+                                View Details
+                            </a>
+
+                            <form
+                                method="post"
+                                action="{% url 'remove_movie_from_list' movie_list.id movie.id %}"
+                                class="d-inline"
+                            >
+                                {% csrf_token %}
+
+                                <button
+                                    type="submit"
+                                    class="btn btn-outline-danger"
+                                >
+                                    Remove
+                                </button>
+
+                            </form>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+            {% endfor %}
+
+        </div>
+
+    {% else %}
+
+        <div class="alert alert-secondary mb-5">
+            This list does not contain any movies yet.
+        </div>
+
+    {% endif %}
+
+    <hr>
+
+    <h2 class="mb-3">
+        Add Movies
+    </h2>
+
+    {% if available_movies %}
+
+        <div class="row g-3">
+
+            {% for movie in available_movies %}
+
+                <div class="col-md-6">
+
+                    <div class="card">
+
+                        <div class="card-body">
+
+                            <h5>
+                                {{ movie.title }}
+                            </h5>
+
+                            <p class="text-muted">
+                                {{ movie.release_year }}
+                                &bull;
+                                {{ movie.genre }}
+                            </p>
+
+                            <form
+                                method="post"
+                                action="{% url 'add_movie_to_list' movie_list.id movie.id %}"
+                            >
+                                {% csrf_token %}
+
+                                <button
+                                    type="submit"
+                                    class="btn btn-primary"
+                                >
+                                    Add to List
+                                </button>
+
+                            </form>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+            {% endfor %}
+
+        </div>
+
+    {% else %}
+
+        <div class="alert alert-success">
+            All available movies are already in this list.
+        </div>
+
+    {% endif %}
+
+</div>
+
+{% endblock %}

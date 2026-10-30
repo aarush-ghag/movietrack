@@ -1,0 +1,91 @@
+{% extends "movies/base.html" %}
+
+{% block title %}My Lists | MovieTrack{% endblock %}
+
+{% block content %}
+
+<div class="container py-5">
+
+    <div class="d-flex justify-content-between align-items-center mb-4">
+
+        <div>
+            <h1>My Lists</h1>
+            <p class="text-muted mb-0">
+                Organize movies into your own custom collections.
+            </p>
+        </div>
+
+        <a
+            href="{% url 'create_movie_list' %}"
+            class="btn btn-primary"
+        >
+            + Create New List
+        </a>
+
+    </div>
+
+    {% if movie_lists %}
+
+        <div class="row g-4">
+
+            {% for movie_list in movie_lists %}
+
+                <div class="col-md-6 col-lg-4">
+
+                    <div class="card h-100 shadow-sm">
+
+                        <div class="card-body">
+
+                            <h4>
+                                {{ movie_list.name }}
+                            </h4>
+
+                            <p class="text-muted">
+                                {{ movie_list.movies.count }}
+                                movie{{ movie_list.movies.count|pluralize }}
+                            </p>
+
+                            <a
+                                href="{% url 'movie_list_detail' movie_list.id %}"
+                                class="btn btn-primary"
+                            >
+                                View List
+                            </a>
+
+                            <form
+                                method="post"
+                                action="{% url 'delete_movie_list' movie_list.id %}"
+                                class="d-inline"
+                            >
+                                {% csrf_token %}
+
+                                <button
+                                    type="submit"
+                                    class="btn btn-outline-danger"
+                                >
+                                    Delete
+                                </button>
+
+                            </form>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+            {% endfor %}
+
+        </div>
+
+    {% else %}
+
+        <div class="alert alert-info">
+            You have not created any custom movie lists yet.
+        </div>
+
+    {% endif %}
+
+</div>
+
+{% endblock %}
