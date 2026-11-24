@@ -22,6 +22,8 @@ if not SECRET_KEY:
 
 DEBUG = os.environ.get("DJANGO_DEBUG", "False").lower() == "true"
 
+
+
 ALLOWED_HOSTS = [
     "localhost",
     "127.0.0.1",
@@ -30,6 +32,7 @@ ALLOWED_HOSTS = [
 ]
 
 CSRF_TRUSTED_ORIGINS = [
+    "http://localhost:8000",
     "https://localhost:8000",
     "https://*.app.github.dev",
     "https://*.run.app",
