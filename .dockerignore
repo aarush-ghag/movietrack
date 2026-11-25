@@ -8,3 +8,6 @@ __pycache__/
 .vscode/
 .env
 staticfiles/
+*.sqlite3
+movies.json
+
